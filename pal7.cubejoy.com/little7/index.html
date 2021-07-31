@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>仙小柒</title>
+    <meta name="keywords" content="仙剑奇侠传七官网，仙剑7，仙剑7官网，仙剑奇侠传官网，仙剑奇侠传7，仙剑奇侠传七，仙剑单机游戏，姚仙，姚壮宪，仙剑七官网，pal7，仙剑游戏下载，正版仙剑奇侠传">
+    <meta name="description" content="欢迎访问国产PC单机游戏《仙剑奇侠传七》官方网站，该作是《仙剑奇侠传》系列第九部作品、由北京软星研发、方块游戏代理发行，预期于2021年上市发行。">
+    <link rel="stylesheet" type="text/css" href="//static.cubejoy.com/appactivity/xpal7/css/ydui.base.css">
+    <link rel="stylesheet" type="text/css" href="//static.cubejoy.com/appactivity/xpal7/css/ydui.rem.css">
+    <link rel="stylesheet" type="text/css" href="//static.cubejoy.com/css/common.css">
+    <link rel="stylesheet" href="//static.cubejoy.com/developer.html/css/swiper.min.css">
+    <link rel="stylesheet"  type="text/css" href="//static.cubejoy.com/appactivity/xpal7/css/font.css">
+    <link rel="stylesheet" type="text/css" href="//static.cubejoy.com/appactivity/xpal7/css/webstyle.css">
+    <link rel="Shortcut Icon" href="https://static.cubejoy.com/images/favicon.ico" />
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <!--开箱音乐-->
+        <div class="openGift_music">
+            <audio id="openGiftM" src="//static.cubejoy.com/appactivity/xpal7/music/open.mp3" style="display: none;"></audio>
+        </div>
+        <!--触摸小柒音乐开启-->
+        <div class="touchxq_music">
+            <audio id="touchxqM" src="//static.cubejoy.com/appactivity/xpal7/music/touch.mp3" style="display: none;"></audio>
+        </div>
+        <!--吃果子音乐开启-->
+        <div class="eat_music">
+            <audio id="eatM" src="//static.cubejoy.com/appactivity/xpal7/music/eat.mp3" loop="loop" style="display: none;"></audio>
+        </div>
+        <!--扔果子音乐开启-->
+        <div class="throw_music">
+            <audio id="throwM" src="//static.cubejoy.com/appactivity/xpal7/music/throw.mp3" loop="loop" style="display: none;"></audio>
+        </div>
+       
+    </div>
+    <div class="Header" id="writeBg">
+        <script type="text/javascript" src="//header.cubejoy.com/productHeader.js"></script>
+    </div>
+
+    <div id="appxq" v-cloak>
+        <div class="pal7_wrapper">
+            <!--背景音乐-->
+            <div class="music_bgm">
+                <div class="bgmusic">
+                    <div class="mNote">
+                        <div class="ml mline"></div>
+                    </div>
+                </div>
+                <div class="musicBg" id="musicBg">
+                </div>
+            </div>
+            <!--背景音乐 end-->
+            <div class="pal7_background">
+                <!--飘动的云-->
+                <div class="cloud_bg"></div>
+                <div class="cloud_sm"></div>
+                <!--小柒slogan-->
+                <div class="pal7_slogan">
+                    <!--抽奖记录-->
+                    <div class="public_record clearfix">
+                        <ul class="public_record_list fl">
+                            <li class="more_record" v-for="l in allrecords">
+                                <div class="user_head fl">
+                                    <img :src="l.head" alt="">
+                                </div>
+                                <div class="game_info fl">
+                                    <span class="user_name">{{l.nick}} </span><span>获得</span><span class="game_name">{{l.name}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="more fr">
+                            <a href="javascript:;" id="RecordMore">更多&nbsp;&gt;</a>
+                        </div>
+                    </div>
+                    <!-- logo -->
+                    <div class="web_logo"></div>
+                    <div class="pal7_slo_Img"></div>
+                    <div class="pal7_light"></div>
+                </div>
+                <!--小柒灵果累计-->
+                <div class="total">
+                    <span class="t_num t_num1"></span>
+                </div>
+                <!--小柒动画区-->
+                <div class="pal7_cutPet " id="vueAnimation">
+                    <div class="webxqFilter">
+                        <div class="xqFilter"></div>
+                    </div>
+                    <!--xq_state 点击动画图-->
+                    <div @click="clicksay($event)" onclick="saysound()" :class="{'hjanimate xqStand':true,'StandAnimation':isActive,'moveAnimation':ismove,'Eatactive':isfruit}"></div>
+                    <div class="xq_response">
+                        <transition name="fadeText">
+                            <template v-if="isDialogue">
+                                <div class="xq_res_text" id="dialogue">{{xiaoqisay}}</div>
+                                <b class="xq_bg"></b>
+                                <b class="xq_sm"></b>
+                            </template>
+                        </transition>
+                        <transition name="fadeText-circleB">
+                            <template v-if="isDialogue">
+                                <b class="xq_bg"></b>
+                            </template>
+                        </transition>
+                        <transition name="fadeText-circleS">
+                            <template v-if="isDialogue">
+                                <b class="xq_sm"></b>
+                            </template>
+                        </transition>
+                    </div>
+                </div>
+                <!--小柒投喂按钮及 奖品谢礼-->
+                <div class="pal7_Buttons">
+                    <div class="pal7_prize" @click="showmyprize()">
+
+                    </div>
+                    <div class="pal7_Eatbtn">
+                        <a href="javascript:;" :class="{'paly_eat_ns':true,'paly_eatDisable':mycheck}" @click="lingguo($event)"></a>
+                        <div class="move"></div>
+                    </div>
+                    <div class="pal7_thank" @click="showcase()">
+                        <div class="pal7_thank_number">
+                            {{mycase}}
+                        </div>
+                    </div>
+                </div>
+                <!--小柒记录-->
+                <div class="pal7_qi_flex">
+                    <div class="pal7_qi_record">
+                        <div class="pal7web">
+                            <div class="pal7_record_title">
+                                <h1 class="pal7_tit"></h1>
+                                <div class="pal7_record_Tnews" @click="window.location.href='//pal7.cubejoy.com/newsList.html'">
+                                </div>
+                            </div>
+                            <div class="pal7_qi_process clearfix">
+                                <div class="swiper-container">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide" v-for="(l,index) in list">
+                                            <div v-if="l.weijiesuo" class="pal7_Unlocking_main pal7_fruit_area fl">
+                                                <div class="pal7_fruit_icon">
+                                                    <b class="fruit_icon">
+                                                        <img src="//static.cubejoy.com/appactivity/xpal7/images/lg.png" alt="">
+                                                    </b>
+                                                    <p class="fruit_number">探险日记</p>
+                                                </div>
+                                                <div class="pal7_fruit_Unlocking">
+                                                    <div class="pal7_f_Unlocking_main pal7_f_null">
+                                                        <p>搜索中...</p>
+                                                        <div class="null_icon">
+                                                            <img v-if="l.stype==1||l.stype==2" src="//static.cubejoy.com/appactivity/xpal7/images/gift.png" alt="">
+                                                            <img v-if="l.stype==3" src="//static.cubejoy.com/appactivity/xpal7/images/news_icon_B.png" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div v-else class="pal7_Unlocking_main">
+                                                <div class="pal7_Unlocking_info">
+                                                    <div class="pal7_Unlocking_icons">
+                                                        <b v-if="l.stype==3" class="informationIcon"></b>
+                                                        <b v-if="l.stype==1||l.stype==2" class="informationIcon giftIcon"></b>
+                                                        <div class="Unlocking_icons_circle"></div>
+                                                        <p>{{l.title}}</p>
+                                                    </div>
+                                                    <div :class="{'Unlocking_left_before':true,'Unlocking_infoFirst':index==list.length-1,'Unlocking_last':index==list.length-2}">
+                                                        <div class="Unlocking_content">
+                                                            <div class="Unlocking_content_video" v-if="l.stype==2">
+                                                                <div id="movie" class="vidoPlay2" @click="play(l.url)">
+                                                                    <img :src="l.img" alt="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="Unlocking_content_video" v-if="l.stype==1">
+                                                                <div>
+                                                                    <img :src="l.img" alt="">
+                                                                </div>
+                                                            </div>
+                                                            <div @click="l.detail!=''&&shownews(l)">
+                                                                <div class="info_picture" v-if="l.stype==3&&(l.img==null||l.img=='')">
+                                                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/default.jpg" alt="">
+                                                                </div>
+                                                                <div class="info_picture" v-else>
+                                                                    <img :src="l.img" alt="">
+                                                                </div>
+                                                                <div :class="{'Unlocking_content_news':true}">
+                                                                    <p>
+                                                                        {{l.time}} 的探班日记
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 如果需要导航按钮 -->
+                                    <!-- <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div> -->
+                                    <!-- 如果需要滚动条 -->
+                                    <div class="swiper-scrollbar"></div>
+                                </div>
+                            </div>
+                            <!-- 规则说明 -->
+                            <div class="pal7_qi_Help">
+                                <div class="pal7_record_title">
+                                    <h1 class="pal7_tit pal7_titHelp"></h1>
+                                </div>
+                                <ul class="rule_explain">
+                                    <li><span>每位大侠每日可以投喂小柒一次，每次投喂可为小柒增加10灵果，同时随机获得小柒谢礼一份。</span></li>
+                                    <li><span>小柒会不定期贡献福利或探险日记。</span></li>
+                                    <li><span>此探险页面将产出实物奖品，大侠们需在个人中心补填收货地址，工作人员会在每周周五统一发出奖品。</span></li>
+                                    <li><span>请在小柒探险结束前兑换谢礼，过期将错失奖品哦。</span></li>
+                                    <li><span>本活动最终解释权归方块游戏所有。</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--小柒记录end-->
+
+            </div>
+        </div>
+
+
+        <!-- 遮罩层 -->
+        <div class="mask_2" style="display: none;"></div>
+        <!-- 奖品预览 -->
+        <div class="record_box consume_box_key" style="display: none;" id="allprize">
+            <div class="record_title clearfix">
+                <h2 class="myRecord fl">奖品预览</h2>
+                <span class="close fr"></span>
+            </div>
+            <div class="consume_content">
+                <!-- 奖品预览 -->
+                <div class="consume consume1">
+                    <div class="clearfix consume1_preview">
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prize01.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>方块经验值</p>
+                        </div>
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prize02.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>巧翎主题手机支架</p>
+                        </div>
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prize03.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>清修海报组合</p>
+                        </div>
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prize04.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>神秘树果葡萄石吊坠</p>
+                        </div>
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prize05.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>仙剑七纪念纯银指环</p>
+                        </div>
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prize06.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>仙剑七主题笔记本</p>
+                        </div>
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prize07.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>小柒毛绒公仔</p>
+                        </div>
+                        <div class="consume_box_main">
+                            <div class="consume_box">
+                                <div class="consumeImg">
+                                    <img src="//static.cubejoy.com/appactivity/xpal7/images/prizeMore.jpg" alt="">
+                                </div>
+                            </div>
+                            <p>更多奖品，增加中</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--帮助说明-->
+        <div class="record_box consume_box_key" style="display: none;">
+            <div class="record_title clearfix">
+                <h2 class="myRecord fl">帮助说明</h2>
+                <span class="close fr"></span>
+            </div>
+            <div class="consume_content explain_box">
+                <!-- 帮助说明 -->
+                <div class="explain_content">
+                    <ul class="explain_list">
+                        <li>
+                            每位大侠每日可以投喂小柒一次，每次投喂可为小柒增加10灵果，同时随机获得小柒谢礼一份。
+                        </li>
+                        <li>
+                            小柒会不定期贡献福利或探险日记。
+                        </li>
+                        <li>
+                            此探险页面将产出实物奖品，大侠们需在个人中心补填 <a href="javascript:;">收货地址</a>，工作人员会在每周周五统一发出奖品。
+                        </li>
+                        <li>
+                            请在小柒探险结束前兑换谢礼，过期将错失奖品哦。
+                        </li>
+                        <li>
+                            本活动最终解释权归方块游戏所有。
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 通告记录 -->
+        <div class="record_box my_record_box yd_mask_gift" id="notificaRecord" style="display: none;">
+            <div class="record_title clearfix">
+                <h2 class="myRecord fl">通告记录</h2>
+                <span class="close fr"></span>
+            </div>
+            <div class="record_con">
+                <table class="record_table">
+                    <thead>
+                        <tr>
+                            <th class="record_time_subtitle my_time">方块ID</th>
+                            <th>物品</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tableScroll" >
+                        <tr v-for="l in allrecords">
+                            <td class="record_time">{{l.nick}}</td>
+                            <td><p class="record_game">{{l.name}}</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="record_botm">仅显示近期实物获奖信息，定期更新</div>
+            </div>
+        </div>
+        <!-- 我的奖品 -->
+        <div class="record_box my_record_box yd_mask_gift" style="display: none;">
+            <div>
+                <div class="record_title clearfix">
+                    <h2 class="myRecord fl">我的奖品</h2>
+                    <span class="close fr"></span>
+                </div>
+                <div class="null_prizeRecord" v-if="prizelist.length==0"></div>
+                <div class="record_con" v-else>
+                    <table class="record_table">
+                        <thead>
+                            <tr>
+                                <th class="record_time_subtitle my_time">时间</th>
+                                <th>物品</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tableScroll">
+                            <tr v-for="p in prizelist">
+                                <td class="record_time">{{p.awardtime}}</td>
+                                <td><p class="record_game">{{p.goodname}}</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="record_botm">实物奖品请完善您的 <a href="//my.cubejoy.com/shop/myaddress.html">默认收货地址</a> 每周周五统一安排发货</div>
+                </div>
+            </div>
+        </div>
+        <!-- 小柒谢礼 -->
+        <div class="record_box my_record_box" style="display: none;" id="casepanel">
+            <div class="record_title clearfix">
+                <h2 class="myRecord fl">小柒谢礼</h2>
+                <span class="close fr"></span>
+            </div>
+            <div class="pal7_gift_main">
+                <div class="pal7_gift_text" @click="showallprize()"><span>看看里面有什么</span><b></b></div>
+                <div class="pal7_Img">
+                    <span>{{mycase}}</span>
+                    <b></b>
+                </div>
+                <div class="sureOpen_btn" @click="opencase()">确认开启</div>
+            </div>
+        </div>
+        <!--开箱过渡-->
+        <div class="openGift_load" style="display: none;"></div>
+        <!--  开箱失败 -->
+        <div class="open_fail" style="display: none;">
+            <img class="failBoxImg" src="//static.cubejoy.com/appactivity/xpal7/images/empty_box.png" alt="">
+            <div class="failInfo">
+                <div class="failImg">
+                    <img src="//static.cubejoy.com/appactivity/xpal7/images/empry.png" alt="">
+                </div>
+                <div class="pal7_gift_text open_pal7_gift_text" @click="showallprize()"><span>看看里面有什么</span><b></b></div>
+                <div class="box_know_btn">知道了</div>
+                <p class="fail_des">参与投喂小柒，即可获得小柒谢礼</p>
+            </div>
+        </div>
+
+        <!-- 开箱成功 -->
+        <div class="open_suc" style="display: none;">
+            <div class="packagebg"></div>
+            <div class="package_top"></div>
+            <div class="Winning_Wrap">
+                <div class="com_part get_prize" v-if="prizemodel&&prizemodel.goodtype==1">
+                    <img class="prizeImg" :src="prizemodel.imgurl" alt="">
+                </div>
+                <div class="com_part get_cou" v-if="prizemodel&&prizemodel.goodtype==6">
+                    <p><span>{{prizemodel.goodvalue}}</span>元</p>
+                </div>
+                <div class="com_part get_fulldis" v-if="prizemodel&&prizemodel.goodtype==6">
+                    <p><span>{{prizemodel.goodvalue}}</span>元</p>
+                </div>
+                <div class="com_part get_exp" v-if="prizemodel&&prizemodel.goodtype==3">
+                    <img src="//static.cubejoy.com/appactivity/xpal7/images/exp_value.png" alt="">
+                </div>
+                <div class="com_part get_vip" v-if="prizemodel&&prizemodel.goodtype==5">
+                    <img src="//static.cubejoy.com/appactivity/xpal7/images/VIP.png" alt="">
+                </div>
+                <div class="package_botmImg">
+                    <p class="prize_name" v-if="prizemodel">{{prizemodel.goodname}}</p>
+                    <div class="accept_prize" @click="load()">
+                        收下奖励
+                    </div>
+                </div>
+                <div class="prize_close_btn" @click="load()">
+                    <img src="//static.cubejoy.com/appactivity/xpal7/images/closeBtn.png" alt="">
+                </div>
+            </div>
+            <div class="package_botmImg2" v-if="prizemodel&&prizemodel.goodtype==4">
+                <p class="prize_name">已存入钱包<br>可在商城消费时抵用</p>
+                <div class="accept_prize">
+                    收下奖励
+                </div>
+                <div class="package_botm2" @click="load()"></div>
+                <div class="com_part get_bala">
+                    <div class="bala_titl">现金余额</div>
+                    <div class="get_bala_con">
+                        <p><span>{{prizemodel.goodvalue}}</span>元</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--vido弹出层-->
+        <div class="Pal7tanPopup" style="display:none;">
+            <div class="tContent">
+                <div class="hidevido"></div>
+                <div class="falshcontent">
+                </div>
+            </div>
+        </div>
+        <!-- 遮罩层 -->
+        <div class="bjLayer" style="display: none;" @click="hidebgLayer()"></div>
+        <!--新闻弹出层-->
+        <div class="NewsPopup" style="display: none;">
+            <div class="newsWrap">
+                <a href="javascript:;" class="newsClose"></a>
+                <div class="newsMainWrap" v-if="nmodel!=null">
+                    <div class="Newstitle">
+                        <h2>{{nmodel.title}}</h2>
+                    </div>
+                    <div class="newsMain newsGun" v-html="nmodel.detail">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="productFooter">
+        <script type="text/javascript" src="//header.cubejoy.com/footerProduct.js"></script>
+    </div>
+
+    <script src="//static.cubejoy.com/appactivity/xpal7/js/jquery-1.8.2.min.js"></script>
+    <!-- 引入Vue2.x -->
+    <script src="//static.cubejoy.com/appactivity/xpal7/js/vue.min.js"></script>
+    <!-- 引入组件库 -->
+    <script src="//static.cubejoy.com/appactivity/xpal7/js/ydui.rem.js"></script>
+    <!--灵果计数-->
+    <script type="text/javascript" src="//static.cubejoy.com/appactivity/xpal7/js/digitalScroll-web.js"></script>
+    <!--弹层事件-->
+    <script type="text/javascript" src="//static.cubejoy.com/appactivity/xpal7/js/wx_web.js"></script>
+    <script src="//www.cubejoy.com/JS_Common/jquery.cookie.js"></script>
+    <script src="//static.cubejoy.com/appactivity/activity1/vue/axios-0.21.0.min.js"></script>
+    <script src="//static.cubejoy.com/developer.html/js/swiper.min.js"></script>
+    <script type="text/javascript" src="//static.cubejoy.com/appactivity/xpal7/js/web.js"></script>
+    <script>
+        var pageurl = "//" + window.location.host;
+        var apiurl = "//activity.cubejoy.com/api"
+        function saysound() {
+            var touchm = document.getElementById("touchxqM");
+            touchm.play();
+        }
+        $(function () {
+            if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+                window.location.href = pageurl + "/little7/phone.html";
+            } else {
+            }
+
+
+            $(".hidevido").click(function () {
+                $(".falshcontent").html('');
+                $(".Pal7tanPopup").hide();
+                $(".bjLayer").hide();
+            })
+            // 点击遮罩视频隐藏
+            $(".bjLayer").click(function () {
+                // 遮罩消失
+                $(".bjLayer").hide();
+                /*关于视频隐藏消失*/
+                $(".phonebj").css("overflow", "auto");
+                $(".falshcontent").html('');
+                $(".Pal7tanPopup").hide();
+            })
+
+
+            //背景音乐
+            $('#musicBg').append('<audio id="bg-music" src="//static.cubejoy.com/appactivity/xpal7/music/bgm.mp3" loop="loop"></audio>');
+            $(".bgmusic").click(function () {
+                if ($(this).parents('.music_bgm').find("#bg-music")[0].paused) {
+                    $(this).parents('.music_bgm').find("#bg-music")[0].play();
+                    $(".mNote").addClass("mNoteTurn");
+                    $(".ml").removeClass("mline");
+                } else {
+                    $(this).parents('.music_bgm').find("#bg-music")[0].pause();
+                    $(".mNote").removeClass("mNoteTurn");
+                    $(".ml").addClass("mline");
+                }
+                $(this).parents('.music_bgm').find("#bg-music").bind('ended', function () {
+                    $(".mNote").removeClass("mNote");
+                    $(".ml").addClass("mline");
+                });
+            })
+        })
+               
+
+        var sum = 0;
+        var timer = null;
+        function show_num1(n) {
+            sum = sum + 1;
+            var it = $(".t_num1 i");
+            var len = String(n).length;
+            for (var i = 0; i < len; i++) {
+                if (it.length <= i) {
+                    $(".t_num1").append("<i></i>");
+                }
+                var num = String(n).charAt(i);
+                //根据数字图片的高度设置相应的值
+                var y = -parseInt(num) * 60;
+                //console.log(y);
+                var obj = $(".t_num1 i").eq(i);
+                obj.animate({
+                    backgroundPosition: '(0 ' + String(y) + 'px)'
+                }, 'slow', 'swing', function () { });
+            }
+            $("#cur_num").val(n);
+        }
+    </script>
+
+
+    <script>
+
+        function iflogin() {
+            if (!$.cookie('idphonemail')) {
+                $($('.productNav > a')[3]).html('未登录');
+                $($('.productNav > a')[3]).attr("href", "//account.cubejoy.com/html/login.html?returnurl=" + window.location.href)
+                return '';
+            } else {
+                $($('.productNav > a')[3]).html($.cookie('idphonemail').split('&')[3].replace('usernickname=', ''));
+                return $.cookie('idphonemail').split('&')[6].replace('desuserid=', '');
+            }
+        }
+        function getheadimg() {
+            return $.cookie('idphonemail').split('&')[4].replace('userhead=', '')
+        }
+
+        var xq = new Vue({
+            el: "#appxq",
+            data: {
+                isDialogue: false,     //点击小柒显示对话
+                isActive: false,      //小柒站立
+                isthrow: false,       //小柒投喂抛物线
+                ismove: false,        //触摸小柒
+                isfruit: false,       //小柒吃果
+                c: '',
+                total: 0,
+                mycase: 0,
+                mycheck: false,
+                headimg: '',
+                list: [],
+                prizenum: 0,
+                show2: false,
+                prizelist: [],
+                prizemodel: null,
+                prizeerrormsg: "",
+                xiaoqisay: "",
+                nmodel: null,
+                allrecords:[]
+            },
+            methods: {
+                shownews(model) {
+                    this._data.nmodel = model;
+                    $('.NewsPopup').show()
+                    $('.mask_2').show()
+                },
+                play(url) {
+                    $(".Pal7tanPopup").show();
+                    $(".falshcontent").html('<video controls="controls" autoplay="autoplay"><source src="' + url + '" type="video/mp4">Your browser does not support HTML5 video.</video>');
+                    $(".bjLayer").show();
+                },
+                hidebgLayer() {
+                    $(".bjLayer").hide();
+                    /*关于视频隐藏消失*/
+                    $(".phonebj").css("overflow", "auto");
+                    $(".falshcontent").html('');
+                    $(".Pal7tanPopup").hide();
+                },
+                //吃果子投喂
+                throwfood(event) {
+                    if (this.isfruit == true) {
+                        return;
+                    }
+                    this.isthrow = true;
+                    $('.move').addClass('active');
+                    setTimeout(function () {
+                        $('.move').removeClass('active');
+                    }, 710);
+                    //投喂按钮抛物线开始结束动画
+                    var activeStartFlag = true;
+                    var activeEndFlag = true;
+                    var self = this;
+                    var eatM = document.getElementById("eatM");
+                    var throwM = document.getElementById("throwM");
+                    document.querySelector('.active').addEventListener("animationstart", function (e) {
+                        if (e.target === this && activeStartFlag) {
+                            activeStartFlag = false;
+                            //扔果子音乐
+                            throwM.play();
+                            //console.log("投喂按钮抛物线开始动画 beginning animation");
+                        }
+                    }, false);
+                    document.querySelector('.active').addEventListener("animationend", function (e) {
+                        if (e.target === this && activeEndFlag) {
+                            activeEndFlag = false;
+                            //console.log("投喂按钮抛物线动画加载完毕");
+                            self.isfruit = true;
+                            //console.log("------------------");
+                            //console.log(self.isfruit);
+                            $(".hjanimate").addClass('Eatactive');
+                            //扔果子音乐
+                            throwM.pause();
+                            //吃果子开始结束动画
+                            var EatactiveStartFlag = true;
+                            var EatactiveEndFlag = true;
+                            document.querySelector('.Eatactive').addEventListener("animationstart", function (e) {
+                                if (e.target === this && EatactiveStartFlag) {
+                                    EatactiveStartFlag = false;
+                                    //吃果子音乐
+                                    eatM.play();
+                                    //console.log("吃果子开始动画 beginning animation");
+                                }
+                            }, false);
+                            document.querySelector('.Eatactive').addEventListener("animationend", function (e) {
+                                if (e.target === this && EatactiveEndFlag) {
+                                    EatactiveEndFlag = false;
+                                    self.isfruit = false;
+                                    self.isthrow = false;
+                                    self.isDialogue = true;
+                                    //吃果子音乐
+                                    eatM.pause();
+                                    setTimeout(function () {
+                                        self.isDialogue = false;
+                                    }, 2000);
+                                    // $(".hjanimate").removeClass('Eatactive');
+                                    //console.log("吃果子动画加载完毕");
+                                }
+                            }, false);
+                        }
+                    }, false);
+
+
+                },
+                //点击小柒动画
+                touchxq(e) {
+                    var touchm = document.getElementById("touchxqM");
+                    //点击小柒显示对话
+                    var dthis = this;
+                    this.isDialogue = true;
+
+                    //小柒开心动画
+                    var ele = e.currentTarget;
+                    var thatEat = this.isthrow;
+                    var _this = this;
+                    if (thatEat == true) {
+                        return;
+                    }
+                    this.ismove = true;
+                    this.isActive = false;
+                    var touchStartFlag = true;
+                    var touchEndFlag = true;
+                    ele.addEventListener("animationstart", function (e) {
+                        if (e.target === this && touchStartFlag) {
+                            touchStartFlag = false;
+                            //触摸音乐
+                            touchm.play();
+                            //console.log("点击小柒动画开始动画 beginning animation");
+                        }
+                    }, false);
+                    ele.addEventListener("animationend", function (e) {
+                        if (e.target === this && touchEndFlag) {
+                            touchEndFlag = false;
+                            _this.ismove = false;
+                            _this.isActive = false;
+                            //console.log("点击小柒动画动画加载完毕");
+                            //触摸音乐
+                            touchm.pause();
+                            setTimeout(function () {
+                                dthis.isDialogue = false;
+                            }, 2000);
+                        }
+                    }, false);
+
+
+                },
+                load: function () {
+                    axios.get(apiurl + "/little7/myinfo?id=" + this._data.c).then(
+                        res => {
+                            if (res.status == 200) {
+                                sum = res.data.totalnum * 10;
+                                show_num1(sum);
+                                this._data.mycase = res.data.mycase;
+                                this._data.prizenum = res.data.prizenum;
+                                this._data.mycheck = res.data.mycheck;
+                                this._data.list = res.data.content.reverse();
+                                setTimeout(function () {
+                                    var mySwiper = new Swiper('.swiper-container', {
+                                        direction: 'vertical', // 垂直切换选项
+                                        direction: 'horizontal',//横向切换
+                                        slidesPerView: 4,
+                                        freeMode: true,//使之移动比较顺滑，有惯性
+                                        initialSlide: xq.list.length,//始终显示最后一页
+                                        slidesPerGroup: 1,
+                                        scrollbar: {
+                                            el: '.swiper-scrollbar',
+                                        },
+                                    })
+                                }, 6);
+                                this.queryall();
+                            } else {
+                                alert('网络忙...')
+                            }
+                        }
+                    )
+                },
+                lingguo: function (e) {
+                    axios.post(apiurl + "/little7/lingguo?id=" + this._data.c).then(
+                        res => {
+                            if (res.status == 200) {
+                                if (res.data.code == 2) {
+                                    window.location.href = '//account.cubejoy.com/Html/Login.html?returnurl=' + window.location.href
+                                } else if (res.data.code == 1) {
+                                    xq.xiaoqisay = res.data.msg;
+                                    this.load()
+                                    this.throwfood(e);
+                                } else {
+                                    xq.xiaoqisay = res.data.msg;
+                                    xq.isDialogue = true;
+                                    setTimeout(function () {
+                                        xq.isDialogue = false;
+                                    }, 2000);
+                                }
+                            } else {
+                                alert('网络忙...')
+                            }
+                        }
+                    )
+                },
+                opencase: function () {
+                    //加载
+                    $('.my_record_box').slideUp();
+                    $('.public_record_box').slideUp();
+                    $('.buy_box').slideUp();
+                    $('.consume_box_key').slideUp();
+                    $('.open_fail').hide();
+                    //开启
+                    $('.openGift_load').show();
+                    $('.mask_2').show()
+                    axios.post(apiurl + "/little7/opencase?id=" + this._data.c).then(
+                        res => {
+                            var x = 500;
+                            var y = 2000;
+                            var rand = parseInt(Math.random() * (x - y + 1) + y);
+                            if (res.status == 200) {
+                                if (res.data.code == 1) {
+                                    xq.prizemodel = res.data.data
+                                    setTimeout(function () {
+                                        $('.openGift_load').hide();
+                                        $('.open_suc').show()
+                                        var openGiftM = document.getElementById("openGiftM");
+                                        openGiftM.play();
+                                    }, rand)
+                                } else {
+                                    xq.prizeerrormsg = res.data.msg;
+                                    setTimeout(function () {
+                                        $('.openGift_load').hide();
+                                        $('.open_fail').show()
+                                        var openGiftM = document.getElementById("openGiftM");
+                                        openGiftM.play();
+                                    }, rand)
+                                }
+                            } else {
+                                setTimeout(function () {
+                                    $('.openGift_load').hide();
+                                    $('.open_fail').show()
+                                    var openGiftM = document.getElementById("openGiftM");
+                                    openGiftM.play();
+                                }, rand)
+                                xq.prizeerrormsg = '网络忙...';
+                            }
+                        }
+                    )
+                },
+                myprize: function () {
+                    axios.get(apiurl + "/little7/myprize?id=" + this._data.c).then(res => {
+                        if (res.status == 200) {
+                            if (res.data.code == 1) {
+                                this._data.prizelist = res.data.data;
+                                this.$forceUpdate()
+                            }
+                        } else {
+
+                        }
+                    });
+                },
+                showcase: function () {
+                    $('.mask_2').fadeIn()
+                    if (xq.mycase > 0) {
+                        $('#casepanel').show();
+
+                    } else {
+                        $('.open_fail').show()
+                    }
+                },
+                showmyprize: function () {
+                    $('.mask_2').fadeIn()
+                    $('.yd_mask_gift').slideDown()
+                    this.myprize();
+                },
+                showallprize: function () {
+                    $('.open_fail').slideUp();
+                    $('#casepanel').slideUp();
+                    $('.mask_2').fadeIn()
+                    $('#allprize').slideDown();
+                },
+                clicksay: function (e) {
+                    xq.touchxq(e);
+                    axios.post(apiurl + "/little7/clicksay").then(res => {
+                        if (res.status == 200) {
+                            xq.xiaoqisay = res.data;
+                        } else {
+                            xq.xiaoqisay = '我是仙小柒';
+                        }
+                        xq.isDialogue = true;
+                    });
+                },
+                queryall: function () {
+                    axios.get(apiurl + "/little7/allprize").then(
+                        res => {
+                            if (res.status == 200) {
+                                this._data.allrecords = res.data;
+                            } else {
+                                alert('网络忙...')
+                            }
+                        }
+                    )
+                }
+            },
+            mounted() {
+                this.isActive = true;
+                var that = this;
+                setInterval(function () {
+                    if (that.isActive == false) {
+                        that.isActive = true;
+                    } else {
+                        that.isActive = false;
+                    }
+                }, 2000)
+                this._data.c = iflogin();
+                this.load();
+                $('.bgmusic').trigger("click")
+            },
+        })
+    </script>
+</body>
+</html>

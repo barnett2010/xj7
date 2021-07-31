@@ -1,0 +1,253 @@
+.SaleInfoBody {
+    background-color: #e2f5ee; 
+}
+.SaleInfo-wrap {   
+    background-color: #e2f5ee;
+   position: relative;
+   max-width: 7.5rem;
+   width: 750px;
+   margin: 0 auto;
+   padding-bottom: 50px;
+}
+.cloudLeft {
+    width: 113px;
+    height: 99px;
+    background: url(../images/cloud_L.png) no-repeat left top;
+    position: absolute;
+    left: 0;
+    top: 113px;
+    z-index: 5;
+}
+.cloudRight {
+    width: 132px;
+    height: 99px;
+    background: url(../images/cloud_R.png) no-repeat left top;
+    position: absolute;
+    right: 0;
+    top: 180px;
+    z-index: 5;
+}
+.SaleHeader {
+    height: 162px;
+}
+.HeaderT {
+    height: 100%;    
+    object-fit: fill;
+    padding-top: 30px;
+    position: relative;
+}
+.HeaderT::before {
+    display: block;
+    content: ' ';
+    width: 408px;
+    height: 148px;
+    background: url(../images/flower.png) no-repeat top right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+}
+.SaleInfo-logo {
+    display: block;
+    margin: 0 0 0 30px;
+}
+.SaleInfo-logo img {
+    display: block;
+    object-fit: fill;
+}
+.SaleInfo-container {
+    width: 710px;
+    height: 100%;
+    margin: 0 auto;
+    background: #58C2B2;
+    border-radius: 10px;
+    padding-bottom: 15px;
+}
+.SaleInfo-Mtitle {
+    height: 130px;
+    line-height: 130px;
+    text-align: center;
+    font-size: 36px;
+    font-family: PingFang SC;
+    color: #F3FCFF;
+    position: relative;
+}
+.Back-activeTit {
+    font-size: 30px;
+}
+.SaleInfo-Mtitle::before {
+    display: block;
+    content: ' ';
+    width: 26px;
+    height: 14px;
+    background: url(../images/flower-samll.png) no-repeat;
+    z-index: 6;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 5px;
+}
+.SaleInfo-Main {
+    width: 692px;
+    position: relative;
+    margin: 0 auto;
+    padding: 21px 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.SaleInfo-Main .abs {
+    width: 692px;
+    height: 21px;
+    background: url(../images/saleStop.png) top center;    
+}
+.SaleInfo-Main .abTop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+.SaleInfo-Main .abBot {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -o-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+}
+.abContainer {
+    background: #F3FFFB;
+    width: 691px;
+    min-height: 400px;
+    overflow: hidden;
+    padding: 10px 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.textDiv {
+    overflow: hidden;
+}
+.abContainer p {
+    font-size: 28px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 48px;
+    margin-bottom: 40px;
+}
+.abContainer .textDiv.mbots p {
+    margin-bottom: 10px !important;
+}
+.Tindet {
+    text-indent: 56px;
+}
+.abContainer .textDiv span {
+    display: block;
+    float: left;
+    width: 50px;
+    font-size: 28px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    margin-top: 5px;
+}
+.abContainer div.textR {
+    width: calc(100% - 50px);
+}
+
+@media screen and (max-width: 750px) {
+    .cloudLeft {
+        width: 1.13rem;
+        height: 0.99rem;
+        top: 1.13rem;
+        background-size: 100%;
+    }
+    .cloudRight {
+        width: 1.32rem;
+        height: 0.99rem;
+        top: 1.8rem;
+        background-size: 100%;
+    }
+    .SaleInfo-logo img {
+        background-size: 100%;
+        width: 2.72rem;
+        height: 1.13rem;
+    }
+    .SaleHeader {
+        height: 1.62rem;
+    }
+    .HeaderT {
+        padding-top: 0.3rem;
+    }
+    .HeaderT::before {
+        display: block;
+        content: ' ';
+        width: 4.08rem;
+        height: 1.48rem;
+        background: url(../images/flower.png) no-repeat top right;
+        background-size: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 5;
+    }
+    .SaleInfo-wrap {
+        width: 100%;
+    }
+    .SaleInfo-container {
+        width: 7.1rem;
+    }
+    .SaleInfo-Main {
+        width: 6.92rem;
+        padding: 0.21rem 0;
+    }
+    .SaleInfo-Main .abs {
+        width: 6.92rem;
+        height: 0.21rem;
+        background-size: 100%;
+    }
+    .abContainer {
+        width: 6.91rem;
+        min-height: 4rem;
+        padding: 0.1rem 0.3rem;
+    }
+    .SaleInfo-Mtitle {
+        height: 1.3rem;
+        line-height: 1.3rem;
+        font-size: 0.36rem;
+    }
+    .Back-activeTit {
+        font-size: 0.3rem;
+    }
+    .SaleInfo-Mtitle::before {
+        width: 0.26rem;
+        height: 0.14rem;
+        background-size: 100%;
+    }
+    .abContainer p {
+        font-size: 0.28rem;
+        line-height: 0.48rem;
+        margin-bottom: 0.4rem;
+    }
+    .abContainer .textDiv span {
+        width: 0.5rem;
+        font-size: 0.28rem;
+        margin-top: 0.05rem;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
